@@ -1,2 +1,2 @@
-output: main.cpp chessWin.cpp chessWin.h
-	g++ chessWin.cpp -o output.exe main.cpp -Isrc/include -Lsrc/lib -lsfml-graphics -lsfml-window -lsfml-system
+output: main.cpp chessWin.cpp
+	g++ main.cpp chessWin.cpp -o output -Isrc/include -Lsrc/lib -lsfml-system -lsfml-graphics -lsfml-window

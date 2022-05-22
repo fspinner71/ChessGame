@@ -6,6 +6,9 @@
 
 int main()
 {
-    print();
+    chessWin window(800, 800, "chess");
+    while (window.Update())
+    {
+    }
     return 0;
 }
