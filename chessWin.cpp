@@ -47,6 +47,22 @@ void chessWin::MapPieces()
         }
     }
 }
+void chessWin::MapPieces(move curr)
+{
+    for (int i = 0; i < 64; ++i)
+    {
+        if (pieces[i].draw == 1)
+        {
+            if (pieces[i].x == curr.oX && pieces[i].y == curr.oY)
+            {
+                pieces[i].x = curr.X;
+                pieces[i].y = curr.Y;
+            }
+            pieces[i].Sprite.setPosition(sf::Vector2f(Holder.left + (pieces[i].x * Holder.width / 8), Holder.top + (pieces[i].y * Holder.height / 8)));
+            pieces[i].Sprite.setScale(Holder.width / 1600.f, Holder.height / 1600.f);
+        }
+    }
+}
 chessWin::chessWin(int width, int height, const char *name, const char *imgPath[12])
 {
     bool sColor = 1;

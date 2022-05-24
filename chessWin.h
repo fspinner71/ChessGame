@@ -27,6 +27,7 @@ private:
     void DrawSquares();
     void DrawPieces();
     void MapPieces();
+    void MapPieces(move curr);
 
 public:
     chessWin(int width, int height, const char *name, const char *imgPath[12]);

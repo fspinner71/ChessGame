@@ -1,5 +1,19 @@
+#include <vector>
+struct move
+{
+    int oX, oY, X, Y;
+    move() {}
+    move(int oldX, int oldY, int newX, int newY);
+};
 class chessBoard
 {
+private:
+    bool turn = 1;
+    const char *notation(int x, int y);
+
+    void wPawn(std::vector<move> &moves, int x, int y, bool clr);
+    std::vector<move> getLegalMoves();
+
 public:
     int board[8][8] = {
         {7, 6, -1, -1, -1, -1, 0, 1},
@@ -11,4 +25,6 @@ public:
         {8, 6, -1, -1, -1, -1, 0, 2},
         {7, 6, -1, -1, -1, -1, 0, 1},
     };
+    bool playMove(move req);
+    bool nextTurn();
 };
