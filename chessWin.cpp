@@ -112,7 +112,7 @@ chessWin::chessWin(int width, int height, const char *name, const char *imgPath[
     {
         for (int j = 0; j < 8; ++j)
         {
-            pieces[index].pieceID = cBoard.board[i][j];
+            pieces[index].pieceID = cBoard.mBoard.arr[i][j];
             pieces[index].x = i;
             pieces[index].y = j;
             if (pieces[index].pieceID != -1)

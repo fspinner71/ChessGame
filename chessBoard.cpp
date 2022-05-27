@@ -1,6 +1,5 @@
 #include <vector>
 #include "chessBoard.h"
-#include <iostream>
 
 move::move(int oldX, int oldY, int newX, int newY)
 {
@@ -12,28 +11,28 @@ move::move(int oldX, int oldY, int newX, int newY)
 
 void chessBoard::wPawn(std::vector<move> &moves, int x, int y)
 {
-    if (board[x][y] == 0)
+    if (mBoard.arr[x][y] == 0)
     {
         if (y > 0)
         {
-            if (board[x][y - 1] == -1)
+            if (mBoard.arr[x][y - 1] == -1)
             {
                 moves.push_back(move(x, y, x, y - 1));
-                if (board[x][y - 2] == -1 && y == 6)
+                if (mBoard.arr[x][y - 2] == -1 && y == 6)
                 {
                     moves.push_back(move(x, y, x, y - 2));
                 }
             }
             if (x > 0)
             {
-                if (board[x - 1][y - 1] >= 6)
+                if (mBoard.arr[x - 1][y - 1] >= 6)
                 {
                     moves.push_back(move(x, y, x - 1, y - 1));
                 }
             }
             if (x < 7)
             {
-                if (board[x + 1][y - 1] >= 6)
+                if (mBoard.arr[x + 1][y - 1] >= 6)
                 {
                     moves.push_back(move(x, y, x + 1, y - 1));
                 }
@@ -44,28 +43,28 @@ void chessBoard::wPawn(std::vector<move> &moves, int x, int y)
 
 void chessBoard::bPawn(std::vector<move> &moves, int x, int y)
 {
-    if (board[x][y] == 6)
+    if (mBoard.arr[x][y] == 6)
     {
         if (y < 7)
         {
-            if (board[x][y + 1] == -1)
+            if (mBoard.arr[x][y + 1] == -1)
             {
                 moves.push_back(move(x, y, x, y + 1));
-                if (board[x][y + 2] == -1 && y == 1)
+                if (mBoard.arr[x][y + 2] == -1 && y == 1)
                 {
                     moves.push_back(move(x, y, x, y + 2));
                 }
             }
             if (x > 0)
             {
-                if (board[x - 1][y + 1] < 6)
+                if (mBoard.arr[x - 1][y + 1] < 6 && mBoard.arr[x - 1][y + 1] != -1)
                 {
                     moves.push_back(move(x, y, x - 1, y + 1));
                 }
             }
             if (x < 7)
             {
-                if (board[x + 1][y + 1] < 6)
+                if (mBoard.arr[x + 1][y + 1] < 6 && mBoard.arr[x + 1][y + 1] != -1)
                 {
                     moves.push_back(move(x, y, x + 1, y + 1));
                 }
@@ -75,40 +74,40 @@ void chessBoard::bPawn(std::vector<move> &moves, int x, int y)
 }
 void chessBoard::King(std::vector<move> &moves, int x, int y)
 {
-    if (board[x][y] == 4 || board[x][y] == 10)
+    if (mBoard.arr[x][y] == 4 || mBoard.arr[x][y] == 10)
     {
-        bool pThreshold = board[x][y] < 6;
+        bool pThreshold = mBoard.arr[x][y] < 6;
         if (x > 0)
         {
-            if ((pThreshold && (board[x - 1][y] > 5 || board[x - 1][y] == -1)) || (!pThreshold && (board[x - 1][y] < 6 || board[x - 1][y] == -1)))
+            if ((pThreshold && (mBoard.arr[x - 1][y] > 5 || mBoard.arr[x - 1][y] == -1)) || (!pThreshold && (mBoard.arr[x - 1][y] < 6 || mBoard.arr[x - 1][y] == -1)))
             {
                 moves.push_back(move(x, y, x - 1, y));
             }
         }
         if (x > 0 && y > 0)
         {
-            if ((pThreshold && (board[x - 1][y - 1] > 5 || board[x - 1][y - 1] == -1)) || (!pThreshold && (board[x - 1][y - 1] < 6 || board[x - 1][y - 1] == -1)))
+            if ((pThreshold && (mBoard.arr[x - 1][y - 1] > 5 || mBoard.arr[x - 1][y - 1] == -1)) || (!pThreshold && (mBoard.arr[x - 1][y - 1] < 6 || mBoard.arr[x - 1][y - 1] == -1)))
             {
                 moves.push_back(move(x, y, x - 1, y - 1));
             }
         }
         if (x > 0 && y < 7)
         {
-            if ((pThreshold && (board[x - 1][y + 1] > 5 || board[x - 1][y + 1] == -1)) || (!pThreshold && (board[x - 1][y + 1] < 6 || board[x - 1][y + 1] == -1)))
+            if ((pThreshold && (mBoard.arr[x - 1][y + 1] > 5 || mBoard.arr[x - 1][y + 1] == -1)) || (!pThreshold && (mBoard.arr[x - 1][y + 1] < 6 || mBoard.arr[x - 1][y + 1] == -1)))
             {
                 moves.push_back(move(x, y, x - 1, y + 1));
             }
         }
         if (y > 0)
         {
-            if ((pThreshold && (board[x][y - 1] > 5 || board[x][y - 1] == -1)) || (!pThreshold && (board[x][y - 1] < 6 || board[x][y - 1] == -1)))
+            if ((pThreshold && (mBoard.arr[x][y - 1] > 5 || mBoard.arr[x][y - 1] == -1)) || (!pThreshold && (mBoard.arr[x][y - 1] < 6 || mBoard.arr[x][y - 1] == -1)))
             {
                 moves.push_back(move(x, y, x, y - 1));
             }
         }
         if (y < 7)
         {
-            if ((pThreshold && (board[x][y + 1] > 5 || board[x][y + 1] == -1)) || (!pThreshold && (board[x][y + 1] < 6 || board[x][y + 1] == -1)))
+            if ((pThreshold && (mBoard.arr[x][y + 1] > 5 || mBoard.arr[x][y + 1] == -1)) || (!pThreshold && (mBoard.arr[x][y + 1] < 6 || mBoard.arr[x][y + 1] == -1)))
             {
                 moves.push_back(move(x, y, x, y + 1));
             }
@@ -116,7 +115,7 @@ void chessBoard::King(std::vector<move> &moves, int x, int y)
         if (x < 7)
         {
 
-            if ((pThreshold && (board[x + 1][y] > 5 || board[x + 1][y] == -1)) || (!pThreshold && (board[x + 1][y] < 6 || board[x + 1][y] == -1)))
+            if ((pThreshold && (mBoard.arr[x + 1][y] > 5 || mBoard.arr[x + 1][y] == -1)) || (!pThreshold && (mBoard.arr[x + 1][y] < 6 || mBoard.arr[x + 1][y] == -1)))
             {
                 moves.push_back(move(x, y, x + 1, y));
             }
@@ -124,7 +123,7 @@ void chessBoard::King(std::vector<move> &moves, int x, int y)
         if (x < 7 && y < 7)
         {
 
-            if ((pThreshold && (board[x + 1][y + 1] > 5 || board[x + 1][y + 1] == -1)) || (!pThreshold && (board[x + 1][y + 1] < 6 || board[x + 1][y + 1] == -1)))
+            if ((pThreshold && (mBoard.arr[x + 1][y + 1] > 5 || mBoard.arr[x + 1][y + 1] == -1)) || (!pThreshold && (mBoard.arr[x + 1][y + 1] < 6 || mBoard.arr[x + 1][y + 1] == -1)))
             {
                 moves.push_back(move(x, y, x + 1, y + 1));
             }
@@ -132,7 +131,7 @@ void chessBoard::King(std::vector<move> &moves, int x, int y)
         if (x < 7 && y > 0)
         {
 
-            if ((pThreshold && (board[x + 1][y - 1] > 5 || board[x + 1][y - 1] == -1)) || (!pThreshold && (board[x + 1][y - 1] < 6 || board[x + 1][y - 1] == -1)))
+            if ((pThreshold && (mBoard.arr[x + 1][y - 1] > 5 || mBoard.arr[x + 1][y - 1] == -1)) || (!pThreshold && (mBoard.arr[x + 1][y - 1] < 6 || mBoard.arr[x + 1][y - 1] == -1)))
             {
                 moves.push_back(move(x, y, x + 1, y - 1));
             }
@@ -142,64 +141,64 @@ void chessBoard::King(std::vector<move> &moves, int x, int y)
 
 void chessBoard::Knight(std::vector<move> &moves, int x, int y)
 {
-    if (board[x][y] == 2 || board[x][y] == 8)
+    if (mBoard.arr[x][y] == 2 || mBoard.arr[x][y] == 8)
     {
-        bool pThreshold = board[x][y] < 6;
-        if (x > 0)
+        bool pThreshold = mBoard.arr[x][y] < 6;
+        if (x > 0 && y < 6)
         {
-            if ((pThreshold && (board[x - 1][y + 2] > 5 || board[x - 1][y + 2] == -1)) || (!pThreshold && (board[x - 1][y + 2] < 6 || board[x - 1][y + 2] == -1)))
+            if ((pThreshold && (mBoard.arr[x - 1][y + 2] > 5 || mBoard.arr[x - 1][y + 2] == -1)) || (!pThreshold && (mBoard.arr[x - 1][y + 2] < 6 || mBoard.arr[x - 1][y + 2] == -1)))
             {
                 moves.push_back(move(x, y, x - 1, y + 2));
             }
         }
-        if (x > 0 && y > 0)
+        if (x > 0 && y > 1)
         {
-            if ((pThreshold && (board[x - 1][y - 2] > 5 || board[x - 1][y - 2] == -1)) || (!pThreshold && (board[x - 1][y - 2] < 6 || board[x - 1][y - 2] == -1)))
+            if ((pThreshold && (mBoard.arr[x - 1][y - 2] > 5 || mBoard.arr[x - 1][y - 2] == -1)) || (!pThreshold && (mBoard.arr[x - 1][y - 2] < 6 || mBoard.arr[x - 1][y - 2] == -1)))
             {
                 moves.push_back(move(x, y, x - 1, y - 2));
             }
         }
-        if (x > 0 && y < 7)
+        if (x > 1 && y < 7)
         {
-            if ((pThreshold && (board[x - 2][y + 1] > 5 || board[x - 2][y + 1] == -1)) || (!pThreshold && (board[x - 2][y + 1] < 6 || board[x - 2][y + 1] == -1)))
+            if ((pThreshold && (mBoard.arr[x - 2][y + 1] > 5 || mBoard.arr[x - 2][y + 1] == -1)) || (!pThreshold && (mBoard.arr[x - 2][y + 1] < 6 || mBoard.arr[x - 2][y + 1] == -1)))
             {
                 moves.push_back(move(x, y, x - 2, y + 1));
             }
         }
-        if (y > 0)
+        if (y > 0 && x > 1)
         {
-            if ((pThreshold && (board[x - 2][y - 1] > 5 || board[x - 2][y - 1] == -1)) || (!pThreshold && (board[x - 2][y - 1] < 6 || board[x - 2][y - 1] == -1)))
+            if ((pThreshold && (mBoard.arr[x - 2][y - 1] > 5 || mBoard.arr[x - 2][y - 1] == -1)) || (!pThreshold && (mBoard.arr[x - 2][y - 1] < 6 || mBoard.arr[x - 2][y - 1] == -1)))
             {
                 moves.push_back(move(x, y, x - 2, y - 1));
             }
         }
-        if (y < 7)
+        if (y < 6 && x < 7)
         {
-            if ((pThreshold && (board[x + 1][y + 2] > 5 || board[x + 1][y + 2] == -1)) || (!pThreshold && (board[x + 1][y + 2] < 6 || board[x + 1][y + 2] == -1)))
+            if ((pThreshold && (mBoard.arr[x + 1][y + 2] > 5 || mBoard.arr[x + 1][y + 2] == -1)) || (!pThreshold && (mBoard.arr[x + 1][y + 2] < 6 || mBoard.arr[x + 1][y + 2] == -1)))
             {
                 moves.push_back(move(x, y, x + 1, y + 2));
             }
         }
-        if (x < 7)
+        if (x < 7 && y > 1)
         {
 
-            if ((pThreshold && (board[x + 1][y - 2] > 5 || board[x + 1][y - 2] == -1)) || (!pThreshold && (board[x + 1][y - 2] < 6 || board[x + 1][y - 2] == -1)))
+            if ((pThreshold && (mBoard.arr[x + 1][y - 2] > 5 || mBoard.arr[x + 1][y - 2] == -1)) || (!pThreshold && (mBoard.arr[x + 1][y - 2] < 6 || mBoard.arr[x + 1][y - 2] == -1)))
             {
                 moves.push_back(move(x, y, x + 1, y - 2));
             }
         }
-        if (x < 7 && y < 7)
+        if (x < 6 && y < 7)
         {
 
-            if ((pThreshold && (board[x + 2][y + 1] > 5 || board[x + 2][y + 1] == -1)) || (!pThreshold && (board[x + 2][y + 1] < 6 || board[x + 2][y + 1] == -1)))
+            if ((pThreshold && (mBoard.arr[x + 2][y + 1] > 5 || mBoard.arr[x + 2][y + 1] == -1)) || (!pThreshold && (mBoard.arr[x + 2][y + 1] < 6 || mBoard.arr[x + 2][y + 1] == -1)))
             {
                 moves.push_back(move(x, y, x + 2, y + 1));
             }
         }
-        if (x < 7 && y > 0)
+        if (x < 6 && y > 0)
         {
 
-            if ((pThreshold && (board[x + 2][y - 1] > 5 || board[x + 2][y - 1] == -1)) || (!pThreshold && (board[x + 2][y - 1] < 6 || board[x + 2][y - 1] == -1)))
+            if ((pThreshold && (mBoard.arr[x + 2][y - 1] > 5 || mBoard.arr[x + 2][y - 1] == -1)) || (!pThreshold && (mBoard.arr[x + 2][y - 1] < 6 || mBoard.arr[x + 2][y - 1] == -1)))
             {
                 moves.push_back(move(x, y, x + 2, y - 1));
             }
@@ -209,9 +208,9 @@ void chessBoard::Knight(std::vector<move> &moves, int x, int y)
 
 void chessBoard::Rook(std::vector<move> &moves, int x, int y)
 {
-    if (board[x][y] == 1 || board[x][y] == 7)
+    if (mBoard.arr[x][y] == 1 || mBoard.arr[x][y] == 7)
     {
-        bool pThreshold = board[x][y] < 6;
+        bool pThreshold = mBoard.arr[x][y] < 6;
         int offX = 0;
         int offY = 0;
         bool stop = false;
@@ -224,11 +223,11 @@ void chessBoard::Rook(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -251,11 +250,11 @@ void chessBoard::Rook(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -278,11 +277,11 @@ void chessBoard::Rook(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -305,11 +304,11 @@ void chessBoard::Rook(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -325,9 +324,9 @@ void chessBoard::Rook(std::vector<move> &moves, int x, int y)
 
 void chessBoard::Bishop(std::vector<move> &moves, int x, int y)
 {
-    if (board[x][y] == 3 || board[x][y] == 9)
+    if (mBoard.arr[x][y] == 3 || mBoard.arr[x][y] == 9)
     {
-        bool pThreshold = board[x][y] < 6;
+        bool pThreshold = mBoard.arr[x][y] < 6;
         int offX = 0;
         int offY = 0;
         bool stop = false;
@@ -341,11 +340,11 @@ void chessBoard::Bishop(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -369,11 +368,11 @@ void chessBoard::Bishop(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -397,11 +396,11 @@ void chessBoard::Bishop(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -425,11 +424,11 @@ void chessBoard::Bishop(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -445,9 +444,9 @@ void chessBoard::Bishop(std::vector<move> &moves, int x, int y)
 
 void chessBoard::Queen(std::vector<move> &moves, int x, int y)
 {
-    if (board[x][y] == 5 || board[x][y] == 11)
+    if (mBoard.arr[x][y] == 5 || mBoard.arr[x][y] == 11)
     {
-        bool pThreshold = board[x][y] < 6;
+        bool pThreshold = mBoard.arr[x][y] < 6;
         int offX = 0;
         int offY = 0;
         bool stop = false;
@@ -461,11 +460,11 @@ void chessBoard::Queen(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -489,11 +488,11 @@ void chessBoard::Queen(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -517,11 +516,11 @@ void chessBoard::Queen(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -545,11 +544,11 @@ void chessBoard::Queen(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -572,11 +571,11 @@ void chessBoard::Queen(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -599,11 +598,11 @@ void chessBoard::Queen(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -626,11 +625,11 @@ void chessBoard::Queen(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -653,11 +652,11 @@ void chessBoard::Queen(std::vector<move> &moves, int x, int y)
             }
             else
             {
-                if (board[x + offX][y + offY] == -1)
+                if (mBoard.arr[x + offX][y + offY] == -1)
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                 }
-                else if ((pThreshold && board[x + offX][y + offY] > 5) || (!pThreshold && board[x + offX][y + offY] < 6))
+                else if ((pThreshold && mBoard.arr[x + offX][y + offY] > 5) || (!pThreshold && mBoard.arr[x + offX][y + offY] < 6))
                 {
                     moves.push_back(move(x, y, x + offX, y + offY));
                     stop = true;
@@ -671,7 +670,7 @@ void chessBoard::Queen(std::vector<move> &moves, int x, int y)
     }
 }
 
-std::vector<move> chessBoard::getLegalMoves()
+std::vector<move> chessBoard::getLegalMoves(board b, bool color)
 {
     std::vector<move> moves;
 
@@ -679,56 +678,56 @@ std::vector<move> chessBoard::getLegalMoves()
     {
         for (int j = 0; j < 8; ++j)
         {
-            if (turn == 1)
+            if (color == 1)
             {
-                if (board[i][j] == 0)
+                if (b.arr[i][j] == 0)
                 {
                     wPawn(moves, i, j);
                 }
-                else if (board[i][j] == 4)
+                else if (b.arr[i][j] == 4)
                 {
                     King(moves, i, j);
                 }
-                else if (board[i][j] == 2)
+                else if (b.arr[i][j] == 2)
                 {
                     Knight(moves, i, j);
                 }
-                else if (board[i][j] == 1)
+                else if (b.arr[i][j] == 1)
                 {
                     Rook(moves, i, j);
                 }
-                else if (board[i][j] == 3)
+                else if (b.arr[i][j] == 3)
                 {
                     Bishop(moves, i, j);
                 }
-                else if (board[i][j] == 5)
+                else if (b.arr[i][j] == 5)
                 {
                     Queen(moves, i, j);
                 }
             }
             else
             {
-                if (board[i][j] == 6)
+                if (b.arr[i][j] == 6)
                 {
                     bPawn(moves, i, j);
                 }
-                else if (board[i][j] == 10)
+                else if (b.arr[i][j] == 10)
                 {
                     King(moves, i, j);
                 }
-                else if (board[i][j] == 8)
+                else if (b.arr[i][j] == 8)
                 {
                     Knight(moves, i, j);
                 }
-                else if (board[i][j] == 7)
+                else if (b.arr[i][j] == 7)
                 {
                     Rook(moves, i, j);
                 }
-                else if (board[i][j] == 9)
+                else if (b.arr[i][j] == 9)
                 {
                     Bishop(moves, i, j);
                 }
-                else if (board[i][j] == 11)
+                else if (b.arr[i][j] == 11)
                 {
                     Queen(moves, i, j);
                 }
@@ -744,16 +743,31 @@ std::vector<move> chessBoard::getLegalMoves()
 
 bool chessBoard::playMove(move req)
 {
-    std::vector<move> moves = getLegalMoves();
+    std::vector<move> moves = getLegalMoves(mBoard, turn);
     move temp;
     for (int i = 0; i < moves.size(); ++i)
     {
         temp = moves[i];
         if (temp.oX == req.oX && temp.oY == req.oY && temp.X == req.X && temp.Y == req.Y)
         {
-            board[req.X][req.Y] = board[req.oX][req.oY];
-            board[req.oX][req.oY] = -1;
-            return true;
+            mBoard.arr[req.X][req.Y] = mBoard.arr[req.oX][req.oY];
+            mBoard.arr[req.oX][req.oY] = -1;
+            std::vector<move> tempMoves = getLegalMoves(mBoard, !turn);
+            bool check = false;
+            for (int j = 0; j < tempMoves.size(); ++j)
+            {
+                if (mBoard.arr[tempMoves[j].X][tempMoves[j].Y] == 4 || mBoard.arr[tempMoves[j].X][tempMoves[j].Y] == 10)
+                {
+                    mBoard = history[history.size() - 1];
+                    check = true;
+                    break;
+                }
+            }
+            if (!check)
+            {
+                history.push_back(mBoard);
+                return true;
+            }
         }
     }
     return false;
