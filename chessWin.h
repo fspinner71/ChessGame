@@ -19,8 +19,12 @@ private:
     sf::IntRect Holder;
     sf::Color sColors[2];
     sf::Texture pieceTex[12];
+    sf::SoundBuffer sBuffer[4];
+    sf::Sound sounds[4];
     chessPiece pieces[64];
     chessBoard cBoard;
+    int selected[2];
+    bool cSelect = 0;
     int sX, sY;
 
     void FitToHolder();
@@ -30,7 +34,7 @@ private:
     void MapPieces(move curr);
 
 public:
-    chessWin(int width, int height, const char *name, const char *imgPath[12]);
+    chessWin(int width, int height, const char *name, const char *imgPath[12], const char *soundsPath[4]);
     bool Update();
 };
 #endif

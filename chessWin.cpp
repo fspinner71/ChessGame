@@ -2,7 +2,6 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include "chessWin.h"
 
 void chessWin::FitToHolder()
@@ -49,21 +48,36 @@ void chessWin::MapPieces()
 }
 void chessWin::MapPieces(move curr)
 {
+    chessPiece *current;
+    bool capture = false;
     for (int i = 0; i < 64; ++i)
     {
         if (pieces[i].draw == 1)
         {
             if (pieces[i].x == curr.oX && pieces[i].y == curr.oY)
             {
-                pieces[i].x = curr.X;
-                pieces[i].y = curr.Y;
+                current = &pieces[i];
+            }
+            if (pieces[i].x == curr.X && pieces[i].y == curr.Y)
+            {
+                pieces[i].draw = 0;
+                sounds[2].play();
+                capture = true;
             }
             pieces[i].Sprite.setPosition(sf::Vector2f(Holder.left + (pieces[i].x * Holder.width / 8), Holder.top + (pieces[i].y * Holder.height / 8)));
             pieces[i].Sprite.setScale(Holder.width / 1600.f, Holder.height / 1600.f);
         }
     }
+    current->x = curr.X;
+    current->y = curr.Y;
+    if (!capture)
+    {
+        sounds[0].play();
+    }
+    current->Sprite.setPosition(sf::Vector2f(Holder.left + (current->x * Holder.width / 8), Holder.top + (current->y * Holder.height / 8)));
+    current->Sprite.setScale(Holder.width / 1600.f, Holder.height / 1600.f);
 }
-chessWin::chessWin(int width, int height, const char *name, const char *imgPath[12])
+chessWin::chessWin(int width, int height, const char *name, const char *imgPath[12], const char *soundsPath[4])
 {
     bool sColor = 1;
     sColors[0].r = 118;
@@ -109,6 +123,11 @@ chessWin::chessWin(int width, int height, const char *name, const char *imgPath[
             ++index;
         }
     }
+    for (int i = 0; i < 4; ++i)
+    {
+        sBuffer[i].loadFromFile(soundsPath[i]);
+        sounds[i].setBuffer(sBuffer[i]);
+    }
     MapPieces();
     win.create(sf::VideoMode(width, height), name);
 }
@@ -140,6 +159,51 @@ bool chessWin::Update()
             }
             MapPieces();
             FitToHolder();
+            break;
+        case sf::Event::MouseButtonPressed:
+            if (event.mouseButton.button == sf::Mouse::Button::Left)
+            {
+                int pX, pY;
+                pX = event.mouseButton.x;
+                pY = event.mouseButton.y;
+                int projX, projY;
+                projX = ((pX - Holder.left) - ((pX - Holder.left) % (Holder.width / 8))) / (Holder.width / 8);
+                projY = ((pY - Holder.top) - ((pY - Holder.top) % (Holder.height / 8))) / (Holder.height / 8);
+                if (cSelect == 0)
+                {
+                    if (pX >= Holder.left && pX <= Holder.left + Holder.width && pY > Holder.top && pY < Holder.top + Holder.height)
+                    {
+                        selected[0] = projX;
+                        selected[1] = projY;
+                        Squares[selected[0]][selected[1]].setFillColor(sf::Color(186, 202, 68));
+                        cSelect = 1;
+                    }
+                }
+                else
+                {
+                    if (selected[0] == projX && selected[1] == projY)
+                    {
+                        Squares[selected[0]][selected[1]].setFillColor(sColors[1 - ((selected[0] + selected[1]) % 2)]);
+                        cSelect = 0;
+                    }
+                    else
+                    {
+                        move m(selected[0], selected[1], projX, projY);
+                        if (cBoard.playMove(m))
+                        {
+                            MapPieces(m);
+                            cBoard.nextTurn();
+                        }
+                        Squares[selected[0]][selected[1]].setFillColor(sColors[1 - ((selected[0] + selected[1]) % 2)]);
+                        cSelect = 0;
+                    }
+                }
+            }
+            else if (event.mouseButton.button == sf::Mouse::Button::Right)
+            {
+                Squares[selected[0]][selected[1]].setFillColor(sColors[1 - ((selected[0] + selected[1]) % 2)]);
+                cSelect = 0;
+            }
             break;
         case sf::Event::Closed:
             win.close();

@@ -11,7 +11,13 @@ private:
     bool turn = 1;
     const char *notation(int x, int y);
 
-    void wPawn(std::vector<move> &moves, int x, int y, bool clr);
+    void wPawn(std::vector<move> &moves, int x, int y);
+    void bPawn(std::vector<move> &moves, int x, int y);
+    void King(std::vector<move> &moves, int x, int y);
+    void Queen(std::vector<move> &moves, int x, int y);
+    void Rook(std::vector<move> &moves, int x, int y);
+    void Bishop(std::vector<move> &moves, int x, int y);
+    void Knight(std::vector<move> &moves, int x, int y);
     std::vector<move> getLegalMoves();
 
 public:
